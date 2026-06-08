@@ -20,28 +20,38 @@ BWA align: bash bwa_align.sh \
     --audit-counts --use-samblaster --emit-discordant --emit-splitters --emit-unmapped --emit-supplementary --emit-primary
 
 CLOverCNV:
-bash CLOverCNV.sh \
-  --sample {sample} \
-  --genome Dd2.fasta \
-  --gff ~/MalariAPI/genomes/Dd2.gff \
-  --bam [scratch]/clover/cannon/bwa/{sample}.mem2.primary.sorted.bam \
-  --bam-dir [scratch]/clover/cannon/bwa/ \
-  --out-root [scratch]/clover/cannon/downsampled/CLOverCNV \
-  --r-modules 'gcc/11.4.0 openmpi/4.1.4 R/4.3.1' \
-  --train-window 75 \
-  --train-drop-dup \
-  --apply-binsize 75 \
-  --lambda 30 --tile-bp 75 --min-tile-bp 75 \
-  --min-probes-per-seg 5 \
-  --flank 1000 \
-  --agg sum  \
-  --final-weak-ratio 1.5 \
-  --final-strong-ratio 2.0 \
-  --final-weak-z 0.3 \
-  --final-strong-z 1.0 --final-count-flank 1000 \
-  --confidence-method mean \
-  --final-fuse --final-fuse-max-gap 3000 \
-  --final-count-drop-dup \
-  --final-keep-mode both \
-  --circular-contigs 'PfDd2_API,PfDd2_MT' \
-  --force
+bash CLOverCNV.sh run \
+    --sample {sample} \
+    --genome ~/MalariAPI/genomes/3d7.fasta \
+    --gff ~/MalariAPI/genomes/3d7.gff \
+    --bam [scratch]/desai/aligned/{sample}.mem2.primary.sorted.bam \
+    --bam-dir [scratch]/desai/aligned/ \
+    --out-root [scratch]/desai/CLOverCNV/ \
+    --r-modules 'gcc/11.4.0  openmpi/4.1.4 R/4.4.1' \
+    --train-window 75 \
+    --train-drop-dup \
+    --exclude-bed ~/MalariAPI/genomes/3d7.exclude.inv_core.bed \
+    --lambda 25 \
+    --tile-bp 75 \
+    --min-tile-bp 75 \
+    --min-probes-per-seg 15 \
+    --flank 1000 \
+    --agg sum \
+    --verbose \
+    --final-weak-ratio 1.35 \
+    --final-strong-ratio 2.0 \
+    --final-weak-z 0.5 \
+    --final-strong-z 5.0 \
+    --final-count-flank 1000 \
+    --confidence-method mean \
+    --final-fuse \
+    --final-fuse-max-gap 3000 \
+    --final-count-drop-dup \
+    --final-keep-mode both \
+    --circular-contigs 'Pf3D7_API_v3,Pf3D7_MIT_v3' \
+    --final2-balance .4 \
+    --final2-rescue-z 3 \
+    --keep-working-dir \
+    --verbose \
+    --force" \
+  -- --cpus 8
